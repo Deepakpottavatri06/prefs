@@ -73,8 +73,64 @@ Explanation-3:
 -------------
 Since there are no healthy people at minute 0, the answer is simply 0.
  */
+
+import java.util.*;
+
 public class Day25P3 {
+    public static int minTime(int [][] arr , int row , int col){
+        int minimum = 0;
+        Queue<List<Integer>> queue = new ArrayDeque<>();
+        boolean visited[][] = new boolean[row][col];
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < col; j++) {
+                if(arr[i][j]==2){
+                    queue.add(Arrays.asList(i,j,0));
+                    visited[i][j] = true;
+                }
+            }
+        }
+        int [][] directions = {
+            {1,0},{-1,0},
+            {0,1},{0,-1}
+        };
+
+        while (!queue.isEmpty()) {
+            List<Integer> temp  = queue.poll();
+            int r = temp.get(0);
+            int c = temp.get(1);
+            int d = temp.get(2);
+            
+            minimum = Math.max(d,minimum);
+            for(int [] dir : directions){
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+                if(nr>=0 && nr<row && nc>=0 && nc<col && !visited[nr][nc] && arr[nr][nc]!=0){
+                    queue.add(Arrays.asList(nr,nc,d+1));
+                    visited[nr][nc] = true;
+                }
+            }            
+        }
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if(!visited[i][j] && arr[i][j]!=0){
+                    return -1;
+                }
+            }
+        }
+        return minimum;
+    }
     public static void main(String[] args) {
-        
+        Scanner cin = new Scanner(System.in);
+        int row = cin.nextInt();
+        int col = cin.nextInt();
+        cin.nextLine();
+        int arr [] [] = new int[row][col];
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < col; j++) {
+                arr[i][j] = cin.nextInt();
+            }
+        }   
+        System.out.println(minTime(arr,row,col));
+        cin.close();
     }
 }

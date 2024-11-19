@@ -44,6 +44,60 @@ NOTE: Please refer the hint.
 
  */
 
+import java.util.*;
+
 public class Day23P1 {
-    
+
+
+    public static int[][] minMatrix(int [][] arr, int row , int col){
+        Queue<int []> queue = new ArrayDeque<>();
+        int [][] dir = {{1,0},{-1,0},{0,1},{0,-1}};
+        int [][]distance = new int[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if(arr[i][j]==0){
+                    distance[i][j] = 0;
+                    queue.add(new int[]{i,j});
+                }
+                else{
+                    distance[i][j] = arr[i][j];
+                }
+            }
+        }
+        while (!queue.isEmpty()) {
+            int temp [] = queue.poll();
+            int r = temp[0];
+            int c = temp[1];
+            for (int k = 0; k < dir.length; k++) {
+                if((r+dir[k][0])>=0 && (r+dir[k][0])<arr.length && (c+dir[k][1])>=0 && (c+dir[k][1])<arr[0].length && (distance[r+dir[k][0]][c+dir[k][1]])==-2){
+                    
+                    distance[r+dir[k][0]][c+dir[k][1]] = distance[r][c]+1;
+                    queue.add(new int[]{r+dir[k][0],c+dir[k][1]});
+                }
+            }
+        }
+
+        return distance;
+       
+    }
+    public static void main(String[] args) {
+        Scanner cin  = new Scanner(System.in);
+        int row = cin.nextInt();
+        int col  = cin.nextInt();
+        cin.nextLine();
+        int arr[][] = new int[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                arr[i][j] = cin.nextInt();
+            }
+        }
+        arr = minMatrix(arr, row, col);
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                System.out.print(arr[i][j]+" ");
+            }
+            System.out.println();
+        }
+        
+    }
 }

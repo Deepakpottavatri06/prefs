@@ -65,8 +65,56 @@ You can't unlock the box.
 
  */
 
-public class Day23P2 {
-    public static void main(String[] args) {
-        
-    }
-}
+ import java.util.*;
+
+ public class Day23P2 {
+ 
+     public static int minMoves(String[] trapCodes, String target) {
+        Queue<String> queue = new LinkedList<>();
+        Set<String> traps = new HashSet<>(Arrays.asList(trapCodes));
+        Set<String> visited = new HashSet<>();
+        queue.add("0000");
+        visited.add("0000");
+        int distance = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            // System.out.println("yoo");
+            for (int i = 0; i < size; i++) {
+                String current = queue.poll();
+                if(current.equals(target)) return distance;
+
+                for (int j = 0; j < 4; j++) {
+                    for (int k : new int[]{1,-1}) {
+                        char nextString[] = current.toCharArray();
+                        nextString[j] = (char)((nextString[j]-'0'+k+10)%10+'0');
+                        
+                        String nstring = new String(nextString);
+                        if(!traps.contains(nstring)&& !visited.contains(nstring)){
+                            visited.add(nstring);
+                            queue.add(nstring);
+                        }
+                    }
+                }
+            }
+            distance++;
+        }
+        return -1; 
+     }
+ 
+     public static void main(String[] args) {
+         Scanner scanner = new Scanner(System.in);
+         
+         
+         String input = scanner.nextLine();  
+         String[] trapCodes = input.split(" ");  
+         
+         String target = scanner.nextLine(); 
+         
+         
+         int result = minMoves(trapCodes, target);
+         System.out.println(result);
+         
+         scanner.close();
+     }
+ }
+ 

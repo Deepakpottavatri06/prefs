@@ -61,8 +61,37 @@ The snake starts at grid[0][0] (index 0).
 - "RIGHT": moves to grid[1][1] (index 4).
 
  */
+
+import java.util.*;
+
+
 public class Day19P1 {
+    public static int oneDIndex(int n,String [] d){
+        List<String> dir = Arrays.asList("UP", "DOWN", "LEFT", "RIGHT");
+        int [][] directions = {{-1,0},{1,0},{0,-1},{0,1}};
+        int arr [][] = new int[n][n];
+        int start [] ={0,0};
+        int result  = 0;
+        for (int i = 0; i < d.length; i++) {
+            int temp [] = directions[dir.indexOf(d[i])];
+            if((start[0]+temp[0])>=0 && (start[0]+temp[0])<arr.length && (start[1]+temp[1])>=0 && (start[1]+temp[1])<arr[0].length){
+                start[0]+=temp[0];
+                start[1]+=temp[1];
+                result = start[0]*n + start[1];
+                System.out.println("start :"+start[0]+start[1]);
+                System.out.println(result);
+            }
+        }
+
+        return result;
+
+    }
     public static void main(String[] args) {
-        
+        Scanner cin = new Scanner(System.in);
+        int n = cin.nextInt();
+        cin.nextLine();
+        String [] d = cin.nextLine().split(" ");
+        System.out.println(oneDIndex(n,d));
+        cin.close();
     }
 }

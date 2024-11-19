@@ -69,8 +69,48 @@ After these operations, the package with the highest load has 8 items,
 
  */
 
+import java.util.*;
+
+
 public class Day22P1 {
+    public static int maxLoad(Integer [] arr, int n , int p){
+        int left = 1;
+        int right = Arrays.stream(arr).max(Integer::compare).orElse(0);
+        while (left<right) {
+            int mid  = (left+right)/2;
+            if(acheivable(arr,mid, p)){
+                right = mid;
+            }
+            else{
+                left = mid+1;
+            }
+        }
+
+        return left;
+    }
+
+    public static boolean acheivable(Integer [] arr, int maxLoad,int nSplits){
+        int splitsNeed = 0;
+        for (int i : arr) {
+            if(i>maxLoad){
+                splitsNeed+=(i-1)/maxLoad;
+                if(splitsNeed>nSplits){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     public static void main(String[] args) {
-        
+        Scanner cin = new Scanner(System.in);
+        int n = cin.nextInt();
+        int p = cin.nextInt();
+        cin.nextLine();
+        Integer arr[] = new Integer[n];
+        for (int i = 0; i < n;  i++) {
+            arr[i] = cin.nextInt();
+        }
+        System.out.println(maxLoad(arr,n,p));
+        cin.close();
     }
 }
