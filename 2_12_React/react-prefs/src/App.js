@@ -1,63 +1,42 @@
-import React from 'react';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import AddStudentForm from "./components/AddStudentForm";
+import StudentsTable from "./components/StudentsTable";
 function App() {
-  const [data, setData] = useState(null);
-  useEffect(() => { 
-    const fetchData = async () => {
-      try{
-        const response = await axios.get("https://d06c-183-82-232-153.ngrok-free.app/studentsAll",
-          {
-            headers: {
-              'ngrok-skip-browser-warning': 'true'
-            }
-          }
-        );
-        console.log(response.data);
-        setData(response.data);
-      }
-      catch(err){
-        console.error(err);
-      }
-    };
-    fetchData();
-  }
-  , []);
-
   return (
+    <Router>
       <div>
-        <h3>Students List</h3>
-        {data ? (
-          <table border="1">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Roll Number</th>
-                <th>Java</th>
-                <th>CPP</th>
-                <th>Python</th>
-                <th>GenAI</th>
-                <th>FSD</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((student, index) => (
-                <tr key={index}>
-                  <td>{student.name}</td>
-                  <td>{student.rollNo}</td>
-                  <td>{student.scores.Java}</td>
-                  <td>{student.scores.CPP}</td>
-                  <td>{student.scores.Python}</td>
-                  <td>{student.scores.GenAI}</td>
-                  <td>{student.scores.FSD}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>Loading...</p>
-        )}
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <div className="container-fluid">
+            <Link className="navbar-brand" to="/">
+              Student App
+            </Link>
+            <div className="collapse navbar-collapse">
+              <ul className="navbar-nav me-auto">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/" >
+                    Add Student
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/students">
+                    View Students
+                  </Link>
+                </li>
+                
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <div>
+          <Routes>
+            <Route path="/" element={<AddStudentForm />} />
+            <Route path="/students" element={<StudentsTable />} />
+          </Routes>
+        </div>
       </div>
+    </Router>
   );
 }
 
